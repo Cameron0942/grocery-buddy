@@ -23,6 +23,8 @@ const ItemInput = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         const inputValue = event.target.elements[0].value;
+
+        if (inputValue === '') return;
     
         dispatch(addItemToList(inputValue));
         

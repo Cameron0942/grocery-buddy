@@ -30,3 +30,13 @@
 .groceryList {
   text-align: center;
 }
+
+.groceryListItemInput {
+  /* Your existing styles here */
+  background-color: yellow;
+}
+
+.groceryListItemInput.checked {
+  text-decoration: line-through;
+  background-color: green !important;
+}
