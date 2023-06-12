@@ -32,8 +32,9 @@ html {
   text-align: center;
 }
 
-.groceryList {
+.groceryListTitle {
   text-align: center;
+  font-size: 48px;
 }
 
 .groceryListItemInput {

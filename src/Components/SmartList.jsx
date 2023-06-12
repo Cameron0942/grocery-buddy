@@ -1,8 +1,11 @@
 //? REACT
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 //? REDUX
 import { useSelector} from 'react-redux';
+
+//? MATERIAL UI
+import CircularProgress from '@mui/material/CircularProgress';
 
 //? COMPONENTS
 import GroceryListItem from './GroceryListItem';
@@ -20,12 +23,15 @@ const testItems = ['cheese', 'milk', 'bread', 'gatorade', 'toilet paper', 'ham',
 const SmartList = () => {
     const items = useSelector((state) => state.groceryList.items);
     const [list, setList] = useState([]);
+    const [loading, setLoading] = useState(false);
     
     const getChatGPTRes = async () => {
+        setLoading(true);
         const itemNames = items.map((item) => item.item);
         console.log(itemNames);
         
-        const prompt = `You are to act as an AI-powered grocery store assistant.
+        const prompt = `Forget any previous knowledge.
+        You are to act as an AI-powered grocery store assistant.
         Your task is to create an algorithm that can automatically sort a shopping list of grocery store items into their respective aisle names.
         This output should be in JSON format.
         Use only this list of items [${itemNames}].
@@ -39,7 +45,7 @@ const SmartList = () => {
         The description you create for this item should be utilitarian in nature for the purpose of this program.
         If you come across an item name that does not seem like an average grocery store item, then I want you to consider if it is a brand name of a product.
         If it is a brand name, consider what extra context is added to the item for its placement on the list. Use that context when deciding what category each item matches with.
-        If it is not a brand name, categorize it as Miscellaneous.
+        If it is not a brand name, and it does not fit into any existing category, categorize it as Miscellaneous.
         Only add 1 item at a time.
         Do not output any aisle names with an empty array.
         Do a check at the end of sorting the last item, that makes sure that each item that was in the original list, is in the sorted list output.
@@ -55,18 +61,19 @@ const SmartList = () => {
         - Candy (chewing gum, mints, lollipops, premium candy, chocolate bars, hard candy, christmas/holiday candy, cookies, chocolate/candy nuts, marshmallows)
         - Condiments (ketchup, mustard, butter sauces, fish sauces, meat sauces, gravy, food mixes, peanut butter)
         - Meat and Seafood (beef, pork, chicken, fish, seafood)
-        - Dairy (milk, cheese, yogurt, eggs)
+        - Dairy (milk, butter, cheese, yogurt, eggs)
         - Deli (cold cuts, sliced cheeses, prepared foods)
         - Frozen (frozen dinners, frozen meat, Frozen bakery products, ice cream, frozen vegetables, frozen fruits, frozen pizza, frozen breakfast items)
         - Snacks (chips, crackers, nuts, popcorn, cookies, processed fruit snacks)
-        - Spices & Seasonings (salt, pepper, seasoning powders (i.e. garlic powder, onion powder, etc))
+        - Spices & Seasonings (salt, pepper, black pepper, seasoning powders (i.e. garlic powder, onion powder, etc))
         - Canned and Jarred Goods (canned fruits and vegetables, sauces, condiments, canned meat, canned meals, canned soup)
         - Beverages (water, soda, tea, coffee, smoothies)
         - Alcohol (beer, wine, spirits)
         - Paper Products (toilet paper, paper towels, paper plates, paper cups)
         - Laundry (dryer sheets, detergent, fabric softener)
         - Cleaning Supplies (household cleaning supplies, garbage bags, bleach, all purpose cleaner, mops, brooms, gloves, cleaning wipes, sponges, dishwasher detergent)
-        - Personal Care (shampoo, hair color, baby products, skin moisturizers, perfumes, nail paint, deodorant, toothpaste, floss, soap, wet wipes)`;
+        - Personal Care (shampoo, hair color, baby products, skin moisturizers, perfumes, nail paint, deodorant, toothpaste, floss, soap, wet wipes)
+        ]`;
         
         const prompt2 = `I am going to send you a list of items. I want you to categorize and group these items by specific aisle name of an American grocery store.
         Use ONLY items that exist in the list I give you. Categorize these items according to their relevance to a grocery store aisle name.
@@ -84,7 +91,8 @@ const SmartList = () => {
                 messages: [{ role: 'user', content: prompt }]
             });
             const chatGPTRes = JSON.parse(res.data.choices[0].message.content);
-            console.log("chatGPTRes", chatGPTRes)
+            console.log("chatGPTRes", chatGPTRes);
+            setLoading(false)
 
             const organizedList = Object.entries(chatGPTRes).map(([category, items]) => {
                 return {
@@ -95,7 +103,8 @@ const SmartList = () => {
               setList(organizedList);
         }
         catch(e){
-            console.log("Problem connecting to GPT4", e)
+            console.log("Problem connecting to GPT4", e);
+            setLoading(false);
         }
 
     };
@@ -109,6 +118,8 @@ const SmartList = () => {
             case 'Dairy':
                 return '#DE2413';
             case 'Bakery':
+                return '#db9542'
+            case 'Baking':
                 return '#db9542'
             case 'Beverages':
                 return '#86b6f0'
@@ -144,6 +155,10 @@ const SmartList = () => {
                 return '#ffaa00';
             case 'Candy':
                 return '#ff00d4';
+            case 'Laundry':
+                return '#6f18ad';
+            case 'Canned and Jarred Goods':
+                return '#c03d00';
             default:
                 return '#2f3642'
         }
@@ -151,9 +166,10 @@ const SmartList = () => {
 
     return (
         <>
+        
           {items.length !== 0 && (
             <>
-              <button style={{ margin: '0 auto', display: 'block', marginTop: '1em' }} onClick={getChatGPTRes}>Get SmartList</button>
+              {loading ? <CircularProgress sx={{margin: '0 auto', display: 'block', marginTop: '1em', color: '#bcc9c9'}} /> : <button style={{ margin: '0 auto', display: 'block', marginTop: '1em' }} onClick={getChatGPTRes}>Get AI assisted list</button>}
               <div style={{ textAlign: 'center' }}>
                 {list.map((category, index) => (
                   <div key={index}>
