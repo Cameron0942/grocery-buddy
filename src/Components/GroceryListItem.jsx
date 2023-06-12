@@ -60,7 +60,7 @@ const GroceryListItem = ({item, index}) => {
           </DialogActions>
         </Dialog>
         <div className='' style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', minWidth: '54vw'}}>
-            <input className={`form-control form-control-lg groceryListItemInput ${item.completed ? 'checked' : ''}`} type="text" placeholder={item.item} value={item.item} readOnly style={{backgroundColor: 'yellow'}} />
+            <input className={`form-control form-control-lg groceryListItemInput ${item.completed ? 'checked' : ''}`} type="text" placeholder={item.item} value={item.item} readOnly style={{backgroundColor: '#ebe2ce', border: '2px black solid'}} />
             <button onClick={handleDelete}>Delete</button>
             <input className='itemCheckbox' type='checkbox' checked={item.completed} onChange={handleCheckboxChange} />
         </div>
