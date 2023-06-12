@@ -1,3 +1,6 @@
+//? REACT
+import React, {useState} from 'react';
+
 //? REDUX
 import { useDispatch, useSelector } from 'react-redux';
 import { addItemToList } from '../Store/GroceryListSlice';
@@ -10,12 +13,10 @@ import { useEffect } from 'react';
 
 const ItemInput = () => {
     const dispatch = useDispatch();
-    const redux = useSelector((state) => state.groceryList.count);
     const reduxGroceryList = useSelector((state) => state.groceryList.items);
     
     useEffect(() => {
-        console.log(redux);
-        console.log(reduxGroceryList);
+        // console.log(reduxGroceryList);
     }, [reduxGroceryList]);
 
     //* Component functions
@@ -26,7 +27,7 @@ const ItemInput = () => {
 
         if (inputValue === '') return;
     
-        dispatch(addItemToList(inputValue));
+        dispatch(addItemToList({item: inputValue}));
         
         // create grocery list array on localstorage
         if(localStorage.getItem('list') === null){
