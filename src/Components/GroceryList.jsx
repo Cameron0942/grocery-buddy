@@ -16,16 +16,16 @@ const GroceryList = () => {
     const LS = localStorage.getItem('list');
 
     useEffect(() => {
-        console.log("reduxGroceryList", reduxGroceryList);
+        // console.log("reduxGroceryList", reduxGroceryList);
     }, [LS, reduxGroceryList])
 
   return (
     <>
-        <h1 className='groceryList'>Your Grocery List</h1>
+        <h1 className='groceryListTitle'>Your Grocery List</h1>
         <div className='entryContainer' style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-            {reduxGroceryList.length === 0 ? <p>There&apos;s nothing here yet 🤔</p> :
-            reduxGroceryList.map((item) => (
-                <GroceryListItem key={item.id} item={item} />
+            {reduxGroceryList.length === 0 ? <p style={{fontSize: '24px'}}>There&apos;s nothing here yet 🤔</p> :
+            reduxGroceryList.map((item, index) => (
+                <GroceryListItem key={item.id} index={index} item={item} />
             ))}
         </div>
     </>

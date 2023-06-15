@@ -1,8 +1,12 @@
+//? REACT
+
 //? REDUX
 import { useDispatch, useSelector } from 'react-redux';
 import { addItemToList } from '../Store/GroceryListSlice';
 
-//? COMPONENTS
+//? MATERIAL UI
+import Button from '@mui/material/Button';
+import AddIcon from '@mui/icons-material/Add';
 
 //? STYLES
 import 'bootstrap/dist/css/bootstrap.css';
@@ -10,12 +14,10 @@ import { useEffect } from 'react';
 
 const ItemInput = () => {
     const dispatch = useDispatch();
-    const redux = useSelector((state) => state.groceryList.count);
     const reduxGroceryList = useSelector((state) => state.groceryList.items);
     
     useEffect(() => {
-        console.log(redux);
-        console.log(reduxGroceryList);
+        // console.log(reduxGroceryList);
     }, [reduxGroceryList]);
 
     //* Component functions
@@ -23,8 +25,10 @@ const ItemInput = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         const inputValue = event.target.elements[0].value;
+
+        if (inputValue === '') return;
     
-        dispatch(addItemToList(inputValue));
+        dispatch(addItemToList({item: inputValue}));
         
         // create grocery list array on localstorage
         if(localStorage.getItem('list') === null){
@@ -51,7 +55,7 @@ const ItemInput = () => {
         <div className='entryContainer' >
             <form onSubmit={handleSubmit} style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                 <input className="form-control form-control-lg" type="text" placeholder="Enter item" />
-                <button type="submit">Add Item</button>
+                <Button variant='contained' color='success' type='submit' sx={{height: 45, marginLeft: 1, fontSize: 20}} startIcon={<AddIcon />}>Add Item</Button>
             </form>
         </div>
     </>
