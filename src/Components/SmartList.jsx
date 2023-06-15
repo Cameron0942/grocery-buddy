@@ -18,7 +18,7 @@ const openai = new OpenAIApi(new Configuration({
   apiKey: import.meta.env.VITE_API_KEY
 }));
 
-const testItems = ['cheese', 'milk', 'bread', 'gatorade', 'toilet paper', 'ham', 'ice cream', 'ketchup', 'beer', 'gum', 'peanut butter', 'chips', 'crackers', 'baking soda', 'salt', 'cereal', 'dryer sheets', 'paper towels', 'garlic powder', 'baby powder', 'marinara sauce', 'floss', 'avocados', 'eggs'];
+// const testItems = ['cheese', 'milk', 'bread', 'gatorade', 'toilet paper', 'ham', 'ice cream', 'ketchup', 'beer', 'gum', 'peanut butter', 'chips', 'crackers', 'baking soda', 'salt', 'cereal', 'dryer sheets', 'paper towels', 'garlic powder', 'baby powder', 'marinara sauce', 'floss', 'avocados', 'eggs'];
 
 const SmartList = () => {
     const items = useSelector((state) => state.groceryList.items);
@@ -76,11 +76,11 @@ const SmartList = () => {
         - Personal Care (shampoo, hair color, baby products, skin moisturizers, perfumes, nail paint, deodorant, toothpaste, floss, soap, wet wipes)
         ]`;
         
-        const prompt2 = `I want you to categorize and group these grocery store items by specific aisle name of an American grocery store.
-        Use ONLY items that exist in the list I give you. Categorize these items according to their relevance to a grocery store aisle name.
-        If no good aisle name exists for an item, place it in your best guess of grocery categorization or miscellaneous. Paper products should be in their own category.
-        Items pertaining to laundry should have their own category. Replace any aisle names, like 'pantry' with more descriptive names. Beverages and Alcohol should be separate categories.
-        Return the list as a JSON object: ${itemNames}`;
+        // const prompt2 = `I want you to categorize and group these grocery store items by specific aisle name of an American grocery store.
+        // Use ONLY items that exist in the list I give you. Categorize these items according to their relevance to a grocery store aisle name.
+        // If no good aisle name exists for an item, place it in your best guess of grocery categorization or miscellaneous. Paper products should be in their own category.
+        // Items pertaining to laundry should have their own category. Replace any aisle names, like 'pantry' with more descriptive names. Beverages and Alcohol should be separate categories.
+        // Return the list as a JSON object: ${itemNames}`;
 
         const prompt3 = `Organize the following list of items by aisle name in a grocery store (capitalize the first letter), do not add aisle to the end of the name, put category names in alphabetical order, and return the output as JSON: ${itemNames}`;
 
