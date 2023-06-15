@@ -16,8 +16,6 @@ const openai = new OpenAIApi(new Configuration({
   apiKey: import.meta.env.VITE_API_KEY
 }));
 
-//! delete this comment
-
 const testItems = ['cheese', 'milk', 'bread', 'gatorade', 'toilet paper', 'ham', 'ice cream', 'ketchup', 'beer', 'gum', 'peanut butter', 'chips', 'crackers', 'baking soda', 'salt', 'cereal', 'dryer sheets', 'paper towels', 'garlic powder', 'baby powder', 'marinara sauce', 'floss', 'avocados', 'eggs'];
 
 const SmartList = () => {
