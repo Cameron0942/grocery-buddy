@@ -1,0 +1,3 @@
+[submodule "grocery-buddy"]
+    path = grocery-buddy
+    url = https://github.com/Cameron0942/grocery-buddy.git
