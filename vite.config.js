@@ -12,6 +12,5 @@ export default defineConfig({
   },
   build: {
     outDir: 'docs',
-    mode: 'production',
   },
 });
