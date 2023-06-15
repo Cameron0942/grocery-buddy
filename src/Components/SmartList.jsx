@@ -6,9 +6,8 @@ import { useSelector} from 'react-redux';
 
 //? MATERIAL UI
 import CircularProgress from '@mui/material/CircularProgress';
-
-//? COMPONENTS
-import GroceryListItem from './GroceryListItem';
+import { Snackbar } from '@mui/material';
+import Button from '@mui/material/Button';
 
 //? OPENAI
 import { Configuration, OpenAIApi } from 'openai';
@@ -19,11 +18,11 @@ const openai = new OpenAIApi(new Configuration({
 
 const testItems = ['cheese', 'milk', 'bread', 'gatorade', 'toilet paper', 'ham', 'ice cream', 'ketchup', 'beer', 'gum', 'peanut butter', 'chips', 'crackers', 'baking soda', 'salt', 'cereal', 'dryer sheets', 'paper towels', 'garlic powder', 'baby powder', 'marinara sauce', 'floss', 'avocados', 'eggs'];
 
-
 const SmartList = () => {
     const items = useSelector((state) => state.groceryList.items);
     const [list, setList] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
     
     const getChatGPTRes = async () => {
         setLoading(true);
@@ -50,7 +49,7 @@ const SmartList = () => {
         Do not output any aisle names with an empty array.
         Do a check at the end of sorting the last item, that makes sure that each item that was in the original list, is in the sorted list output.
         Do a check to make sure that only items inside this list (${itemNames}) are included in the output. Remove any items that are not in this list (${itemNames}).
-        The list should be returned in alphabetical order by each aisle name.
+        The list should be returned in alphabetical order by each category.
         Please only show the output and not the algorithim itself.
         Use these aisle categories:
         - Produce (fruits, vegetables, herbs)
@@ -75,24 +74,25 @@ const SmartList = () => {
         - Personal Care (shampoo, hair color, baby products, skin moisturizers, perfumes, nail paint, deodorant, toothpaste, floss, soap, wet wipes)
         ]`;
         
-        const prompt2 = `I am going to send you a list of items. I want you to categorize and group these items by specific aisle name of an American grocery store.
+        const prompt2 = `I want you to categorize and group these grocery store items by specific aisle name of an American grocery store.
         Use ONLY items that exist in the list I give you. Categorize these items according to their relevance to a grocery store aisle name.
         If no good aisle name exists for an item, place it in your best guess of grocery categorization or miscellaneous. Paper products should be in their own category.
         Items pertaining to laundry should have their own category. Replace any aisle names, like 'pantry' with more descriptive names. Beverages and Alcohol should be separate categories.
         Return the list as a JSON object: ${itemNames}`;
 
-        const prompt3 = `Organize the following list of items by aisle name in a grocery store, do not add aisle to the end of the name, and return the output in JSON: ${itemNames}`;
+        const prompt3 = `Organize the following list of items by aisle name in a grocery store (capitalize the first letter), do not add aisle to the end of the name, put category names in alphabetical order, and return the output as JSON: ${itemNames}`;
 
         try {
             //configures the chat model
             //messages is an array of input 'content' is the message being sent
             const res = await openai.createChatCompletion({
                 model: 'gpt-3.5-turbo',
-                messages: [{ role: 'user', content: prompt }]
+                messages: [{ role: 'user', content: itemNames.length < 5 ? prompt : prompt3 }]
             });
             const chatGPTRes = JSON.parse(res.data.choices[0].message.content);
             console.log("chatGPTRes", chatGPTRes);
-            setLoading(false)
+            setLoading(false);
+            setSnackbarOpen(false);
 
             const organizedList = Object.entries(chatGPTRes).map(([category, items]) => {
                 return {
@@ -105,6 +105,7 @@ const SmartList = () => {
         catch(e){
             console.log("Problem connecting to GPT4", e);
             setLoading(false);
+            setSnackbarOpen(true);
         }
 
     };
@@ -114,7 +115,7 @@ const SmartList = () => {
             case 'Alcohol':
                 return '#7f3cde';
             case 'Produce':
-                return '#309147';
+                return '#296e39';
             case 'Dairy':
                 return '#DE2413';
             case 'Bakery':
@@ -124,6 +125,8 @@ const SmartList = () => {
             case 'Beverages':
                 return '#86b6f0'
             case 'Household':
+                return '#43781f';
+            case 'Household Supplies':
                 return '#43781f';
             case 'Cleaning Supplies':
                 return '#43781f';
@@ -151,6 +154,8 @@ const SmartList = () => {
                 return '#5f03a6';
             case 'Spices & Seasonings':
                 return '#733927';
+            case 'Spices and Seasonings':
+                return '#733927';
             case 'Breakfast Aisle':
                 return '#ffaa00';
             case 'Candy':
@@ -159,17 +164,39 @@ const SmartList = () => {
                 return '#6f18ad';
             case 'Canned and Jarred Goods':
                 return '#c03d00';
+            case 'Toiletries':
+                return '#09918d';
             default:
                 return '#2f3642'
         }
     }
 
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        setSnackbarOpen(false);
+    }
+
     return (
         <>
+
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={handleSnackbarClose}
+                message="❌ There was a problem connecting to ChatGPT. Please try again in a moment. ❌"
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                    }}
+                onClick={handleSnackbarClose}
+            />
         
           {items.length !== 0 && (
+            
             <>
-              {loading ? <CircularProgress sx={{margin: '0 auto', display: 'block', marginTop: '1em', color: '#bcc9c9'}} /> : <button style={{ margin: '0 auto', display: 'block', marginTop: '1em' }} onClick={getChatGPTRes}>Get AI assisted list</button>}
+              {loading ? <CircularProgress sx={{margin: '0 auto', display: 'block', marginTop: '1em', color: '#bcc9c9'}} /> : <Button onClick={getChatGPTRes} variant='contained' color='secondary' sx={{margin: '0 auto', display: 'block', marginTop: '1em'}}>Get AI assisted list</Button>}
               <div style={{ textAlign: 'center' }}>
                 {list.map((category, index) => (
                   <div key={index}>
@@ -177,7 +204,11 @@ const SmartList = () => {
                       <>
                         <div className='smartListCategory' style={{ backgroundColor: determineCategoryColor(category.category) }}>{category.category}</div>
                         {category.items.map((item, itemIndex) => (
-                          <div className='smartListItem' key={itemIndex}>{item}</div>
+                          <div className='smartListItem' key={itemIndex} style={{
+                            // apply borderBottomLeft and Right radius to the last element of the category
+                            borderBottomLeftRadius: itemIndex === category.items.length - 1 ? '10px' : '0',
+                            borderBottomRightRadius: itemIndex === category.items.length - 1 ? '10px' : '0'
+                          }}>{item}</div>
                         ))}
                       </>
                     )}

@@ -22,6 +22,7 @@ html {
 
 .form-control.form-control-lg {
   width: 50vw;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.75);
 }
 
 .form-control.form-control-lg.groceryListItemInput{
