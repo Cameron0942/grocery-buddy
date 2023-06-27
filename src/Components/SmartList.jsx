@@ -204,7 +204,7 @@ const SmartList = () => {
                   <div key={index}>
                     {category.items.length > 0 && (
                       <>
-                        <div className='smartListCategory' style={{ backgroundColor: determineCategoryColor(category.category) }}>{category.category}</div>
+                        <div className='smartListCategory' style={{ backgroundColor: determineCategoryColor(category.category), textShadow: '2px 2px black' }}>{category.category}</div>
                         {category.items.map((item, itemIndex) => (
                           <div className='smartListItem' key={itemIndex} style={{
                             // apply borderBottomLeft and Right radius to the last element of the category
