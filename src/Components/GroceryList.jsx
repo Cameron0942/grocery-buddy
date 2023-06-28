@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 
 //? REDUX
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 //? COMPONENTS
 import GroceryListItem from './GroceryListItem';

@@ -1,5 +1,5 @@
 //? REACT
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 //? REDUX
 import { useSelector} from 'react-redux';
@@ -9,7 +9,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { Snackbar } from '@mui/material';
 import Button from '@mui/material/Button';
 
-//! delete me
+//? AXIOS
+import axios from 'axios';
 
 //? OPENAI
 import { Configuration, OpenAIApi } from 'openai';
@@ -25,6 +26,7 @@ const SmartList = () => {
     const [list, setList] = useState([]);
     const [loading, setLoading] = useState(false);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [randomColors, setRandomColors] = useState([]);
     
     const getChatGPTRes = async () => {
         setLoading(true);
@@ -113,63 +115,63 @@ const SmartList = () => {
     };
 
     const determineCategoryColor = (category) => {
-        switch(category){
-            case 'Alcohol':
+        switch(category.toLowerCase()){
+            case 'alcohol':
                 return '#7f3cde';
-            case 'Produce':
+            case 'produce':
                 return '#296e39';
-            case 'Dairy':
+            case 'dairy':
                 return '#DE2413';
-            case 'Bakery':
+            case 'bakery':
                 return '#db9542'
-            case 'Baking':
+            case 'baking':
                 return '#db9542'
-            case 'Beverages':
+            case 'beverages':
                 return '#86b6f0'
-            case 'Household':
+            case 'household':
                 return '#43781f';
-            case 'Household Supplies':
+            case 'household Supplies':
                 return '#43781f';
-            case 'Cleaning Supplies':
+            case 'cleaning Supplies':
                 return '#43781f';
-            case 'Meat':
+            case 'meat':
                 return '#4d250c';
-            case 'Meat and Seafood':
+            case 'meat and seafood':
                 return '#4d250c';
-            case 'Seafood':
+            case 'seafood':
                 return '#4066a3';
-            case 'Meat/Seafood':
+            case 'meat/seafood':
                 return '#4066a3';
-            case 'Pantry':
+            case 'pantry':
                 return '#7d5031';
-            case 'Frozen Foods':
+            case 'frozen foods':
                 return '#2a97ad';
-            case 'Frozen':
+            case 'frozen':
                 return '#2a97ad';
-            case 'Paper Products':
+            case 'paper products':
                 return '#debd3c';
-            case 'Snacks':
+            case 'snacks':
                 return '#f05a0a';
-            case 'Condiments':
+            case 'condiments':
                 return '#7a0a00';
-            case 'Personal Care':
+            case 'personal care':
                 return '#5f03a6';
-            case 'Spices & Seasonings':
+            case 'spices & seasonings':
                 return '#733927';
-            case 'Spices and Seasonings':
+            case 'spices and seasonings':
                 return '#733927';
-            case 'Breakfast Aisle':
+            case 'breakfast aisle':
                 return '#ffaa00';
-            case 'Candy':
+            case 'candy':
                 return '#ff00d4';
-            case 'Laundry':
+            case 'laundry':
                 return '#6f18ad';
-            case 'Canned and Jarred Goods':
+            case 'canned and jarred goods':
                 return '#c03d00';
-            case 'Toiletries':
+            case 'toiletries':
                 return '#09918d';
             default:
-                return '#2f3642'
+                return "#" + Math.floor(Math.random()*16777215).toString(16);
         }
     }
 
@@ -178,7 +180,7 @@ const SmartList = () => {
           return;
         }
         setSnackbarOpen(false);
-    }
+    };
 
     return (
         <>
