@@ -1,5 +1,3 @@
-//? REACT
-
 //? REDUX
 import { useDispatch, useSelector } from 'react-redux';
 import { addItemToList } from '../Store/GroceryListSlice';
@@ -53,9 +51,9 @@ const ItemInput = () => {
   return (
     <>
         <div className='entryContainer' >
-            <form onSubmit={handleSubmit} style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+            <form className='inputForm' onSubmit={handleSubmit}>
                 <input className="form-control form-control-lg" type="text" placeholder="Enter item" />
-                <Button variant='contained' color='success' type='submit' sx={{height: 45, marginLeft: 1, fontSize: 20}} startIcon={<AddIcon />}>Add Item</Button>
+                <Button variant='contained' color='success' type='submit' className='addItemButton smallScreen' sx={{height: 45, marginLeft: 1, fontSize: 20}} startIcon={<AddIcon />}>Add Item</Button>
             </form>
         </div>
     </>

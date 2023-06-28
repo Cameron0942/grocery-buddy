@@ -62,12 +62,12 @@ const GroceryListItem = ({item, index}) => {
             <button onClick={handleClose} style={{width: '100%'}}>❌ No</button>
           </DialogActions>
         </Dialog>
-        <div className='' style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', minWidth: '54vw'}}>
-            <input className={`form-control form-control-lg groceryListItemInput ${item.completed ? 'checked' : ''}`} type="text" placeholder={item.item} value={item.item ?? item} readOnly style={{backgroundColor: '#ebe2ce', border: '2px black solid', marginRight: 10}} />
-            <Button onClick={handleDelete} variant='contained' startIcon={<DeleteIcon />} sx={{marginRight: 0.5, paddingTop: 1, paddingBottom: 1}}>
+        <div className='groceryListItem'>
+            <input className={`form-control form-control-lg groceryListItemInput ${item.completed ? 'checked' : ''}`} type="text" placeholder={item.item} value={item.item ?? item} readOnly style={{backgroundColor: '#ebe2ce', border: '2px black solid'}} />
+            <Button onClick={handleDelete} variant='contained' startIcon={<DeleteIcon />} className='groceryItemDelButton' sx={{marginRight: 0.5, marginLeft: 1, paddingTop: 1, paddingBottom: 1, '@media (max-width: 768px)': {marginLeft: 0, marginRight: 0, fontSize: 12, minWidth: 2, paddingTop: 1.5, paddingBottom: 1.5}}}>
               Delete
             </Button>
-            <input className='itemCheckbox' type='checkbox' checked={item.completed} onChange={handleCheckboxChange} style={{height: '50px', width: '50px', color: 'green'}} />
+            <input className='itemCheckbox' type='checkbox' checked={item.completed} onChange={handleCheckboxChange} />
         </div>
     </>
   );

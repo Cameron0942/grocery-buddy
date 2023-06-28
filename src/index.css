@@ -20,6 +20,13 @@ html {
   margin: 0;
 }
 
+@media screen and (max-width: 768px) {
+  .title {
+    font-size: 3em;
+    margin-bottom: 1rem;
+  }
+}
+
 .form-control.form-control-lg {
   width: 50vw;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.75);
@@ -29,13 +36,77 @@ html {
   width: 100%;
 }
 
+@media screen and (max-width: 768px) {
+  .form-control.form-control-lg {
+    width: 98vw;
+  }
+}
+
 .entryContainer {
   text-align: center;
+}
+
+.inputForm {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (max-width: 768px) {
+  .inputForm {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .addItemButton.smallScreen{
+    height: 45px;
+    width: 98%;
+    margin-left: 1px;
+    font-size: 25px;
+    margin-top: 5px;
+  }
 }
 
 .groceryListTitle {
   text-align: center;
   font-size: 48px;
+}
+
+@media screen and (max-width: 768px) {
+  .groceryListTitle {
+    font-size: 30px;
+    margin-top: 5px;
+  }
+}
+
+.itemCheckbox {
+  height: 60px;
+  width: 60px;
+  color: green;
+}
+
+@media screen and (max-width: 768px) {
+  .itemCheckbox {
+    height: 70px;
+    width: 70px;
+  }
+}
+
+.groceryListItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  min-width: 54vw;
+}
+
+@media screen and (max-width: 768px) {
+  .groceryListItem {
+    height: 3.2em;
+  }
 }
 
 .groceryListItemInput {
@@ -61,6 +132,13 @@ html {
   padding-left: 0.3em;
 }
 
+@media screen and (max-width: 768px) {
+  .smartListCategory {
+    font-size: 28px;
+    min-width: 95vw;
+  }
+}
+
 .smartListItem {
   background-color: #ebe7dd;
   margin-left: auto;
@@ -72,4 +150,10 @@ html {
   border-bottom: 2px black solid;
   border-left: 2px black solid;
   border-right: 2px black solid;
+}
+
+@media screen and (max-width: 768px) {
+  .smartListItem {
+    min-width: 95vw;
+  }
 }

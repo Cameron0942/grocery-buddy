@@ -1,5 +1,5 @@
 //? REACT
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 //? REDUX
 import { useSelector} from 'react-redux';
