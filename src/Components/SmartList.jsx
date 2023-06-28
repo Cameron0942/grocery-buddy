@@ -9,9 +9,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { Snackbar } from '@mui/material';
 import Button from '@mui/material/Button';
 
-//? AXIOS
-import axios from 'axios';
-
 //? OPENAI
 import { Configuration, OpenAIApi } from 'openai';
 
@@ -26,7 +23,6 @@ const SmartList = () => {
     const [list, setList] = useState([]);
     const [loading, setLoading] = useState(false);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const [randomColors, setRandomColors] = useState([]);
     
     const getChatGPTRes = async () => {
         setLoading(true);
