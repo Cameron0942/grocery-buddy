@@ -7,6 +7,6 @@ import getRecipeSuggestions from "../controllers/getRecipeSuggestions.js";
 
 getRouter.use(json());
 
-getRouter.get("/", getRecipeSuggestions);
+getRouter.post("/recipe", getRecipeSuggestions);
 
 export default getRouter;

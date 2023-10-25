@@ -6,19 +6,30 @@ import cors from "cors";
 
 //? EXPRESS
 const app = express();
+app.use(json());
+app.use(cors());
+// Enable CORS for all routes (you can specify origins)
+app.use(
+  cors({
+    origin: "*", // Change this to the specific origin of your frontend
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+  })
+);
 
 //? PORTS
 // eslint-disable-next-line no-undef
 const SERVER_PORT = process.env.SERVER_PORT || 5000;
 
 //? CONTROLLERS
-import getRouter from "./routers/getRouter.js";
+// import getRouter from "./routers/getRouter.js";
+import postRouter from "./routers/postRouter.js";
 
 //* ROUTES
-app.use("/", getRouter);
+// app.use("/", getRouter);
+app.use("/", postRouter);
 
-app.use(json());
-app.use(cors());
 
 // Get the directory path using import.meta.url
 // const __filename = fileURLToPath(import.meta.url);

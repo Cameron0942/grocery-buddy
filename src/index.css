@@ -1,23 +1,35 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@500&family=Roboto+Condensed:wght@700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@500&family=Roboto+Condensed:wght@700&display=swap");
 
 html {
-  background-color: #4D604D;
+  background-color: #4d604d;
   overflow-x: hidden;
 }
 
 #root {
-  background-color: #4D604D;
-  height: 100vh;
-  width: 100vw;
+  /* background-color: #4d604d; */
+  min-height: 100dvh;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  /* background-image: url("https://images.pexels.com/photos/6252677/pexels-photo-6252677.jpeg"); */
+  background-image: url("https://images.pexels.com/photos/264636/pexels-photo-264636.jpeg");
+  /* background-image: url("https://images.pexels.com/photos/3952043/pexels-photo-3952043.jpeg"); */
+  /* background-image: url("https://images.pexels.com/photos/1640775/pexels-photo-1640775.jpeg"); */
+  /* background-image: url("https://images.pexels.com/photos/3026802/pexels-photo-3026802.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"); */
 }
 
 .title {
   font-size: 5em;
-  color: #440B7C;
+  color: #7014cc;
   text-shadow: 1px 1px black;
-  text-align: center;
-  font-family: 'Roboto Condensed', sans-serif;
+  font-family: "Roboto Condensed", sans-serif;
   margin: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
 }
 
 @media screen and (max-width: 768px) {
@@ -32,7 +44,7 @@ html {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.75);
 }
 
-.form-control.form-control-lg.groceryListItemInput{
+.form-control.form-control-lg.groceryListItemInput {
   width: 100%;
 }
 
@@ -61,7 +73,7 @@ html {
 }
 
 @media screen and (max-width: 768px) {
-  .addItemButton.smallScreen{
+  .addItemButton.smallScreen {
     height: 45px;
     width: 98%;
     margin-left: 1px;
@@ -73,6 +85,8 @@ html {
 .groceryListTitle {
   text-align: center;
   font-size: 48px;
+  color: #ffffff;
+  text-shadow: 1px 1px black;
 }
 
 @media screen and (max-width: 768px) {

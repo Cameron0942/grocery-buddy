@@ -1,35 +1,38 @@
 //? REACT
-import { useState } from 'react';
+import { useState } from "react";
 
 //? REDUX
-import { useSelector} from 'react-redux';
+import { useSelector } from "react-redux";
 
 //? MATERIAL UI
-import CircularProgress from '@mui/material/CircularProgress';
-import { Snackbar } from '@mui/material';
-import Button from '@mui/material/Button';
+import CircularProgress from "@mui/material/CircularProgress";
+import { Snackbar } from "@mui/material";
+import Button from "@mui/material/Button";
+import SmartToySharpIcon from '@mui/icons-material/SmartToySharp';
 
 //? OPENAI
-import { Configuration, OpenAIApi } from 'openai';
+import { Configuration, OpenAIApi } from "openai";
 
-const openai = new OpenAIApi(new Configuration({
-  apiKey: import.meta.env.VITE_API_KEY
-}));
+const openai = new OpenAIApi(
+  new Configuration({
+    apiKey: import.meta.env.VITE_API_KEY,
+  })
+);
 
 // const testItems = ['cheese', 'milk', 'bread', 'gatorade', 'toilet paper', 'ham', 'ice cream', 'ketchup', 'beer', 'gum', 'peanut butter', 'chips', 'crackers', 'baking soda', 'salt', 'cereal', 'dryer sheets', 'paper towels', 'garlic powder', 'baby powder', 'marinara sauce', 'floss', 'avocados', 'eggs'];
 
 const SmartList = () => {
-    const items = useSelector((state) => state.groceryList.items);
-    const [list, setList] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
-    
-    const getChatGPTRes = async () => {
-        setLoading(true);
-        const itemNames = items.map((item) => item.item);
-        console.log(itemNames);
-        
-        const prompt = `Forget any previous knowledge.
+  const items = useSelector((state) => state.groceryList.items);
+  const [list, setList] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const getChatGPTRes = async () => {
+    setLoading(true);
+    const itemNames = items.map((item) => item.item);
+    console.log(itemNames);
+
+    const prompt = `Forget any previous knowledge.
         You are to act as an AI-powered grocery store assistant.
         Your task is to create an algorithm that can automatically sort a shopping list of grocery store items into their respective aisle names.
         This output should be in JSON format.
@@ -73,154 +76,192 @@ const SmartList = () => {
         - Cleaning Supplies (household cleaning supplies, garbage bags, bleach, all purpose cleaner, mops, brooms, gloves, cleaning wipes, sponges, dishwasher detergent)
         - Personal Care (shampoo, hair color, baby products, skin moisturizers, perfumes, nail paint, deodorant, toothpaste, floss, soap, wet wipes)
         ]`;
-        
-        // const prompt2 = `I want you to categorize and group these grocery store items by specific aisle name of an American grocery store.
-        // Use ONLY items that exist in the list I give you. Categorize these items according to their relevance to a grocery store aisle name.
-        // If no good aisle name exists for an item, place it in your best guess of grocery categorization or miscellaneous. Paper products should be in their own category.
-        // Items pertaining to laundry should have their own category. Replace any aisle names, like 'pantry' with more descriptive names. Beverages and Alcohol should be separate categories.
-        // Return the list as a JSON object: ${itemNames}`;
 
-        const prompt3 = `Organize the following list of items by aisle name in a grocery store (capitalize the first letter), do not add aisle to the end of the name, put category names in alphabetical order, and return the output as JSON: ${itemNames}`;
+    // const prompt2 = `I want you to categorize and group these grocery store items by specific aisle name of an American grocery store.
+    // Use ONLY items that exist in the list I give you. Categorize these items according to their relevance to a grocery store aisle name.
+    // If no good aisle name exists for an item, place it in your best guess of grocery categorization or miscellaneous. Paper products should be in their own category.
+    // Items pertaining to laundry should have their own category. Replace any aisle names, like 'pantry' with more descriptive names. Beverages and Alcohol should be separate categories.
+    // Return the list as a JSON object: ${itemNames}`;
 
-        try {
-            //configures the chat model
-            //messages is an array of input 'content' is the message being sent
-            const res = await openai.createChatCompletion({
-                model: 'gpt-3.5-turbo',
-                messages: [{ role: 'user', content: itemNames.length < 5 ? prompt : prompt3 }]
-            });
-            const chatGPTRes = JSON.parse(res.data.choices[0].message.content);
-            console.log("chatGPTRes", chatGPTRes);
-            setLoading(false);
-            setSnackbarOpen(false);
+    const prompt3 = `Organize the following list of items by aisle name in a grocery store (capitalize the first letter), do not add aisle to the end of the name, put category names in alphabetical order, and return the output as JSON: ${itemNames}`;
 
-            const organizedList = Object.entries(chatGPTRes).map(([category, items]) => {
-                return {
-                  category: category,
-                  items: items
-                };
-              });
-              setList(organizedList);
+    try {
+      //configures the chat model
+      //messages is an array of input 'content' is the message being sent
+      const res = await openai.createChatCompletion({
+        model: "gpt-3.5-turbo",
+        messages: [
+          { role: "user", content: itemNames.length < 5 ? prompt : prompt3 },
+        ],
+      });
+      const chatGPTRes = JSON.parse(res.data.choices[0].message.content);
+      console.log("chatGPTRes", chatGPTRes);
+      setLoading(false);
+      setSnackbarOpen(false);
+
+      const organizedList = Object.entries(chatGPTRes).map(
+        ([category, items]) => {
+          return {
+            category: category,
+            items: items,
+          };
         }
-        catch(e){
-            console.log("Problem connecting to GPT4", e);
-            setLoading(false);
-            setSnackbarOpen(true);
-        }
-
-    };
-
-    const determineCategoryColor = (category) => {
-        switch(category.toLowerCase()){
-            case 'alcohol':
-                return '#7f3cde';
-            case 'produce':
-                return '#296e39';
-            case 'dairy':
-                return '#DE2413';
-            case 'bakery':
-                return '#db9542'
-            case 'baking':
-                return '#db9542'
-            case 'beverages':
-                return '#86b6f0'
-            case 'household':
-                return '#43781f';
-            case 'household Supplies':
-                return '#43781f';
-            case 'cleaning Supplies':
-                return '#43781f';
-            case 'meat':
-                return '#4d250c';
-            case 'meat and seafood':
-                return '#4d250c';
-            case 'seafood':
-                return '#4066a3';
-            case 'meat/seafood':
-                return '#4066a3';
-            case 'pantry':
-                return '#7d5031';
-            case 'frozen foods':
-                return '#2a97ad';
-            case 'frozen':
-                return '#2a97ad';
-            case 'paper products':
-                return '#debd3c';
-            case 'snacks':
-                return '#f05a0a';
-            case 'condiments':
-                return '#7a0a00';
-            case 'personal care':
-                return '#5f03a6';
-            case 'spices & seasonings':
-                return '#733927';
-            case 'spices and seasonings':
-                return '#733927';
-            case 'breakfast aisle':
-                return '#ffaa00';
-            case 'candy':
-                return '#ff00d4';
-            case 'laundry':
-                return '#6f18ad';
-            case 'canned and jarred goods':
-                return '#c03d00';
-            case 'toiletries':
-                return '#09918d';
-            default:
-                return "#" + Math.floor(Math.random()*16777215).toString(16);
-        }
-    }
-
-    const handleSnackbarClose = (event, reason) => {
-        if (reason === 'clickaway') {
-          return;
-        }
-        setSnackbarOpen(false);
-    };
-
-    return (
-        <>
-
-            <Snackbar
-                open={snackbarOpen}
-                autoHideDuration={6000}
-                onClose={handleSnackbarClose}
-                message="❌ There was a problem connecting to ChatGPT. Please try again in a moment. ❌"
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'center',
-                    }}
-                onClick={handleSnackbarClose}
-            />
-        
-          {items.length !== 0 && (
-            
-            <>
-              {loading ? <CircularProgress sx={{margin: '0 auto', display: 'block', marginTop: '1em', color: '#bcc9c9'}} /> : <Button onClick={getChatGPTRes} variant='contained' color='secondary' sx={{margin: '0 auto', display: 'block', marginTop: '1em'}}>Get AI assisted list</Button>}
-              <div style={{ textAlign: 'center' }}>
-                {list.map((category, index) => (
-                  <div key={index}>
-                    {category.items.length > 0 && (
-                      <>
-                        <div className='smartListCategory' style={{ backgroundColor: determineCategoryColor(category.category), textShadow: '2px 2px black' }}>{category.category}</div>
-                        {category.items.map((item, itemIndex) => (
-                          <div className='smartListItem' key={itemIndex} style={{
-                            // apply borderBottomLeft and Right radius to the last element of the category
-                            borderBottomLeftRadius: itemIndex === category.items.length - 1 ? '10px' : '0',
-                            borderBottomRightRadius: itemIndex === category.items.length - 1 ? '10px' : '0'
-                          }}>{item}</div>
-                        ))}
-                      </>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
-        </>
       );
-      
-      
-}
+      setList(organizedList);
+    } catch (e) {
+      console.log("Problem connecting to GPT4", e);
+      setLoading(false);
+      setSnackbarOpen(true);
+    }
+  };
+
+  const determineCategoryColor = (category) => {
+    switch (category.toLowerCase()) {
+      case "alcohol":
+        return "#7f3cde";
+      case "produce":
+        return "#296e39";
+      case "dairy":
+        return "#DE2413";
+      case "bakery":
+        return "#db9542";
+      case "baking":
+        return "#db9542";
+      case "beverages":
+        return "#86b6f0";
+      case "household":
+        return "#43781f";
+      case "household Supplies":
+        return "#43781f";
+      case "cleaning Supplies":
+        return "#43781f";
+      case "meat":
+        return "#4d250c";
+      case "meat and seafood":
+        return "#4d250c";
+      case "seafood":
+        return "#4066a3";
+      case "meat/seafood":
+        return "#4066a3";
+      case "pantry":
+        return "#7d5031";
+      case "frozen foods":
+        return "#2a97ad";
+      case "frozen":
+        return "#2a97ad";
+      case "paper products":
+        return "#debd3c";
+      case "snacks":
+        return "#f05a0a";
+      case "condiments":
+        return "#7a0a00";
+      case "personal care":
+        return "#5f03a6";
+      case "spices & seasonings":
+        return "#733927";
+      case "spices and seasonings":
+        return "#733927";
+      case "breakfast aisle":
+        return "#ffaa00";
+      case "candy":
+        return "#ff00d4";
+      case "laundry":
+        return "#6f18ad";
+      case "canned and jarred goods":
+        return "#c03d00";
+      case "toiletries":
+        return "#09918d";
+      default:
+        return "#" + Math.floor(Math.random() * 16777215).toString(16);
+    }
+  };
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
+  return (
+    <>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        message="❌ There was a problem connecting to ChatGPT. Please try again in a moment. ❌"
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        onClick={handleSnackbarClose}
+      />
+
+      {items.length !== 0 && (
+        <>
+          {loading ? (
+            <CircularProgress
+              sx={{
+                margin: "0 auto",
+                display: "block",
+                marginTop: "1em",
+                color: "#bcc9c9",
+              }}
+            />
+          ) : (
+            <Button
+              onClick={getChatGPTRes}
+              variant="contained"
+              color="secondary"
+              sx={{ margin: "0 auto", display: "block", marginTop: "1em" }}
+            >
+              <SmartToySharpIcon /> Get AI assisted list <SmartToySharpIcon />
+            </Button>
+          )}
+          <div style={{ textAlign: "center" }}>
+            {list.map((category, index) => (
+              <div key={index}>
+                {category.items.length > 0 && (
+                  <>
+                    <div
+                      className="smartListCategory"
+                      style={{
+                        backgroundColor: determineCategoryColor(
+                          category.category
+                        ),
+                        textShadow: "2px 2px black",
+                      }}
+                    >
+                      {category.category}
+                    </div>
+                    {category.items.map((item, itemIndex) => (
+                      <div
+                        className="smartListItem"
+                        key={itemIndex}
+                        style={{
+                          // apply borderBottomLeft and Right radius to the last element of the category
+                          borderBottomLeftRadius:
+                            itemIndex === category.items.length - 1
+                              ? "10px"
+                              : "0",
+                          borderBottomRightRadius:
+                            itemIndex === category.items.length - 1
+                              ? "10px"
+                              : "0",
+                        }}
+                      >
+                        {item}
+                      </div>
+                    ))}
+                  </>
+                )}
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+    </>
+  );
+};
 
 export default SmartList;
