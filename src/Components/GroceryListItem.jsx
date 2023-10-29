@@ -46,12 +46,29 @@ const GroceryListItem = ({ item, index }) => {
 
   useEffect(() => {
     if (confirmDelete) {
+      // Retrieve the existing data from LocalStorage
+      const LSGroceryListArray = JSON.parse(localStorage.getItem("list"));
+  
+      if (LSGroceryListArray) {
+        // Find the index of the item to delete
+        const indexOfItemToBeDeleted = LSGroceryListArray.indexOf(item.item);
+  
+        if (indexOfItemToBeDeleted !== -1) {
+          // Create a new array without the item to be deleted
+          const newArray = [...LSGroceryListArray.slice(0, indexOfItemToBeDeleted), ...LSGroceryListArray.slice(indexOfItemToBeDeleted + 1)];
+  
+          // Update LocalStorage with the new array
+          localStorage.setItem("list", JSON.stringify(newArray));
+        }
+      }
+  
       dispatch(removeItemFromList(item));
       setConfirmDelete(false);
       setDeleteDialog(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [confirmDelete]);
+  
 
   return (
     <>

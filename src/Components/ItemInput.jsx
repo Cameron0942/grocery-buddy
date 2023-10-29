@@ -1,61 +1,72 @@
 //? REDUX
-import { useDispatch, useSelector } from 'react-redux';
-import { addItemToList } from '../Store/GroceryListSlice';
+import { useDispatch, useSelector } from "react-redux";
+import { addItemToList } from "../Store/GroceryListSlice";
 
 //? MATERIAL UI
-import Button from '@mui/material/Button';
-import AddIcon from '@mui/icons-material/Add';
+import Button from "@mui/material/Button";
+import AddIcon from "@mui/icons-material/Add";
 
 //? STYLES
-import 'bootstrap/dist/css/bootstrap.css';
-import { useEffect } from 'react';
+import "bootstrap/dist/css/bootstrap.css";
+import { useEffect } from "react";
 
 const ItemInput = () => {
-    const dispatch = useDispatch();
-    const reduxGroceryList = useSelector((state) => state.groceryList.items);
-    
-    useEffect(() => {
-        // console.log(reduxGroceryList);
-    }, [reduxGroceryList]);
+  const dispatch = useDispatch();
+  const reduxGroceryList = useSelector((state) => state.groceryList.items);
 
-    //* Component functions
-    //? HANDLE SUBMIT
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const inputValue = event.target.elements[0].value;
+  useEffect(() => {
+    console.log("reduxGroceryList", reduxGroceryList);
+  }, [reduxGroceryList]);
 
-        if (inputValue === '') return;
-    
-        dispatch(addItemToList({item: inputValue}));
-        
-        // create grocery list array on localstorage
-        if(localStorage.getItem('list') === null){
-            localStorage.setItem('list', JSON.stringify([inputValue]));
-        }
-        else{
-            //copy current localstorage string, convert to array, push new item, convert back to string, push back to localstorage
-            const LSString = localStorage.getItem('list');
-            const LSArray = JSON.parse(LSString);
-            const newData = inputValue;
-            LSArray.push(newData);
-            const updatedArrayString = JSON.stringify(LSArray);
-            localStorage.setItem('list', updatedArrayString);
-        }
-        
-        
-    
-    
-        event.target.elements[0].value = ''; // Clear the input field after submission
-      };
+  //* Component functions
+  //? HANDLE SUBMIT
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const inputValue = event.target.elements[0].value;
+
+    if (inputValue === "") return;
+
+    dispatch(addItemToList({ item: inputValue }));
+
+    // console.log("Redux state after adding item:", reduxGroceryList);
+
+    // create grocery list array on localstorage
+    if (localStorage.getItem("list") === null) {
+      localStorage.setItem("list", JSON.stringify([inputValue]));
+    } else {
+      //copy current localstorage string, convert to array, push new item, convert back to string, push back to localstorage
+      const LSString = localStorage.getItem("list");
+      const LSArray = JSON.parse(LSString);
+      const newData = inputValue;
+      LSArray.push(newData);
+      const updatedArrayString = JSON.stringify(LSArray);
+      localStorage.setItem("list", updatedArrayString);
+    }
+
+    event.target.elements[0].value = ""; // Clear the input field after submission
+  };
 
   return (
     <>
-        <div className='entryContainer' >
-            <form className='inputForm' onSubmit={handleSubmit}>
-                <input className="form-control form-control-lg" type="text" placeholder="Enter item" />
-                <Button variant='contained' color='success' type='submit' className='addItemButton smallScreen' sx={{height: 45, marginLeft: 1, fontSize: 20}} startIcon={<AddIcon />}>Add Item</Button>
-            </form>
-        </div>
+      <div className="entryContainer">
+        <form className="inputForm" onSubmit={handleSubmit}>
+          <input
+            className="form-control form-control-lg"
+            type="text"
+            placeholder="Enter item"
+          />
+          <Button
+            variant="contained"
+            color="success"
+            type="submit"
+            className="addItemButton smallScreen"
+            sx={{ height: 45, marginLeft: 1, fontSize: 20 }}
+            startIcon={<AddIcon />}
+          >
+            Add Item
+          </Button>
+        </form>
+      </div>
     </>
   );
 };

@@ -4,9 +4,13 @@ import { useState, useEffect } from "react";
 //? REACT ROUTER DOM
 import { Link } from 'react-router-dom';
 
+//? REDUX
+import { useDispatch, useSelector } from 'react-redux';
+import { store } from "../Store/store";
+import { getList } from "../Store/GroceryListSlice";
+
 //? AXIOS
 import axios from "axios";
-
 
 //? MATERIAL UI
 import { styled } from "@mui/material/styles";
@@ -21,7 +25,9 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Divider from "@mui/material/Divider";
 import Pagination from "@mui/material/Pagination";
 
-const payload = ["apples", "chicken", "walnuts"];
+const payload = JSON.parse(localStorage.getItem("list")) || ['chicken'];
+
+
 
 const ExpandMore = styled((props) => {
   // eslint-disable-next-line no-unused-vars
@@ -59,12 +65,25 @@ function encodeBase64(arrayBuffer) {
 }
 
 const Recipe = () => {
+  const dispatch = useDispatch();
+  const reduxGroceryList = useSelector(getList);
   const [responseMessage, setResponseMessage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [expandedStates, setExpandedStates] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const cardsPerPage = 3;
+
+  useEffect(() => {
+    // console.log(dispatch(getList()));
+    // console.log(reduxGroceryList.payload.groceryList.items);
+    console.log(store.getState())
+    // console.log(dispatch(testRedux()));
+  }, [reduxGroceryList])
+
+  store.subscribe(() => {
+    console.log("Store changed!", store.getState())
+  }, [])
 
   //* Get background img from Pexels
   useEffect(() => {
