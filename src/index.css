@@ -13,7 +13,8 @@ html {
   background-position: center;
   background-attachment: fixed;
   /* background-image: url("https://images.pexels.com/photos/6252677/pexels-photo-6252677.jpeg"); */
-  background-image: url("https://images.pexels.com/photos/264636/pexels-photo-264636.jpeg");
+  /* background-image: url("https://images.pexels.com/photos/264636/pexels-photo-264636.jpeg"); */
+  background-image: url("https://images.pexels.com/photos/2733918/pexels-photo-2733918.jpeg");
   /* background-image: url("https://images.pexels.com/photos/3952043/pexels-photo-3952043.jpeg"); */
   /* background-image: url("https://images.pexels.com/photos/1640775/pexels-photo-1640775.jpeg"); */
   /* background-image: url("https://images.pexels.com/photos/3026802/pexels-photo-3026802.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"); */
@@ -25,11 +26,14 @@ html {
   text-shadow: 1px 1px black;
   font-family: "Roboto Condensed", sans-serif;
   margin: 0;
-  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 10px;
+}
+
+.titleContainer {
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 @media screen and (max-width: 768px) {

@@ -1,14 +1,6 @@
 //? REACT
 import { useState, useEffect } from "react";
 
-//? REACT ROUTER DOM
-import { Link } from 'react-router-dom';
-
-//? REDUX
-import { useDispatch, useSelector } from 'react-redux';
-import { store } from "../Store/store";
-import { getList } from "../Store/GroceryListSlice";
-
 //? AXIOS
 import axios from "axios";
 
@@ -24,10 +16,9 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Divider from "@mui/material/Divider";
 import Pagination from "@mui/material/Pagination";
+import { Button } from "@material-ui/core";
 
-const payload = JSON.parse(localStorage.getItem("list")) || ['chicken'];
-
-
+const payload = JSON.parse(localStorage.getItem("list")) || ["chicken"];
 
 const ExpandMore = styled((props) => {
   // eslint-disable-next-line no-unused-vars
@@ -65,25 +56,12 @@ function encodeBase64(arrayBuffer) {
 }
 
 const Recipe = () => {
-  const dispatch = useDispatch();
-  const reduxGroceryList = useSelector(getList);
   const [responseMessage, setResponseMessage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [expandedStates, setExpandedStates] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const cardsPerPage = 3;
-
-  useEffect(() => {
-    // console.log(dispatch(getList()));
-    // console.log(reduxGroceryList.payload.groceryList.items);
-    console.log(store.getState())
-    // console.log(dispatch(testRedux()));
-  }, [reduxGroceryList])
-
-  store.subscribe(() => {
-    console.log("Store changed!", store.getState())
-  }, [])
 
   //* Get background img from Pexels
   useEffect(() => {
@@ -128,9 +106,9 @@ const Recipe = () => {
     }
   }, [responseMessage]);
 
-  useEffect(()=> {
+  useEffect(() => {
     makePostRequest("http://localhost:5000/recipe");
-  }, [])
+  }, []);
 
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
@@ -168,6 +146,9 @@ const Recipe = () => {
     }
   }
 
+  const handleReturnToGroceryList = () => {
+    window.location.href = "/";
+  };
   const renderCards = () => {
     const startIndex = (currentPage - 1) * cardsPerPage;
     const endIndex = startIndex + cardsPerPage;
@@ -183,8 +164,6 @@ const Recipe = () => {
           paddingLeft: 4,
           paddingRight: 4,
           paddingBottom: 2,
-          // marginLeft: "auto",
-          // marginRight: "auto",
         }}
       >
         <CardHeader
@@ -227,7 +206,7 @@ const Recipe = () => {
             }}
           />
         </div>
-        <Divider sx={{ backgroundColor: "#000000", height: "2px" }}></Divider>
+        <Divider sx={{ backgroundColor: "#000000", height: "2px" }} />
         <Typography variant="h5">Ingredients:</Typography>
         <CardContent>
           {JSON.parse(recipe.Ingredients.replace(/'/g, '"')).map(
@@ -298,19 +277,23 @@ const Recipe = () => {
             textAlign: "center",
           }}
         >
-          These recipes are suggested based on the items in your
-          grocery list. If your grocery list contains at least half of the
-          ingredients for a recipe, it will be suggested to you. To generate
-          more recipes <a href="/" style={{textDecoration: 'none', color: '#99c2ff'}}><u>try adding more items to your grocery list!</u></a>
+          These recipes are suggested based on the items in your grocery list.
+          If your grocery list contains at least half of the ingredients for a
+          recipe, it will be suggested to you. To generate more recipes{" "}
+          <a href="/" style={{ textDecoration: "none", color: "#a8c8f7" }}>
+            <u>try adding more items to your grocery list!</u>
+          </a>
         </Typography>
+
+        <Button
+          variant="contained"
+          color="primary"
+          style={{ marginTop: 10, marginBottom: 10 }}
+          onClick={handleReturnToGroceryList}
+        >
+          Return to grocery list
+        </Button>
       </div>
-      {/* {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <button onClick={() => makePostRequest("http://localhost:5000/recipe")}>
-          Make POST Request
-        </button>
-      )} */}
       <div>
         {responseMessage && (
           <div style={{ paddingBottom: 2 }}>
@@ -342,9 +325,6 @@ const Recipe = () => {
             >
               {renderCards()}
             </div>
-            {/* <pre style={{ color: "white" }}>
-            {JSON.stringify(responseMessage, null, 2)}
-          </pre> */}
           </div>
         )}
       </div>
