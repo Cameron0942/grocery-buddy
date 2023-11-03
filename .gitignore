@@ -7,13 +7,15 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
 dist
 dist-ssr
 *.local
 .env.local
 .env
 .env.production
+
+#images
+/backend/food-images
 
 # Editor directories and files
 .vscode/*
@@ -25,3 +27,4 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+node_modules

@@ -6,7 +6,7 @@ dotenv.config();
 
 export default defineConfig({
   plugins: [react()],
-  base: '/grocery-buddy/',
+  // base: '/grocery-buddy/',
   resolve: {
     extensions: ['.js', '.jsx'],
   },
