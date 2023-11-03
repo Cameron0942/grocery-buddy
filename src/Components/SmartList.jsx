@@ -15,7 +15,7 @@ import { Configuration, OpenAIApi } from "openai";
 
 const openai = new OpenAIApi(
   new Configuration({
-    apiKey: import.meta.env.VITE_API_KEY,
+    apiKey: import.meta.env.VITE_OPENAI_API_KEY,
   })
 );
 
@@ -30,7 +30,6 @@ const SmartList = () => {
   const getChatGPTRes = async () => {
     setLoading(true);
     const itemNames = items.map((item) => item.item);
-    console.log(itemNames);
 
     const prompt = `Forget any previous knowledge.
         You are to act as an AI-powered grocery store assistant.
