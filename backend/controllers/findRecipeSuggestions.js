@@ -1,8 +1,8 @@
 import fs from "fs";
 import csv from "csv-parser";
 
-const FILE = "../recipe_data_and_images.csv";
-const IMAGES = "../food-images";
+const FILE = "./recipe_data_and_images.csv";
+const IMAGES = "./food-images";
 
 function getMatchedRecipes(callback, groceryList) {
   let errorCount = 0;
