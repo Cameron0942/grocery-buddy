@@ -19,10 +19,10 @@ function getMatchedRecipes(callback, groceryList) {
           .replace(/\r?\n|\r/g, "")
           .replace(/'/g, '"')
           .replace(/""/g, '"');
-
+          
+        console.log("cleanedString", cleanedString);
         const ingredientsArray = JSON.parse(cleanedString);
 
-        console.log("cleanedString", cleanedString);
 
         const matchedIngredients = ingredientsArray.filter((item) =>
           groceryList.some((term) =>
