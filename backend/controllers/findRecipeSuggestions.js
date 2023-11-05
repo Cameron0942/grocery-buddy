@@ -9,6 +9,9 @@ function getMatchedRecipes(callback, groceryList) {
   let matchedRecipes = [];
   let imageFiles = [];
 
+  console.log("FILE", FILE);
+  console.log("IMAGES", IMAGES);
+
   fs.createReadStream(FILE)
     .pipe(csv())
     .on("data", (row) => {
