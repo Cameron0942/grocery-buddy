@@ -22,7 +22,7 @@ function getMatchedRecipes(callback, groceryList) {
 
         const ingredientsArray = JSON.parse(cleanedString);
 
-        console.log("ingredientsArray", ingredientsArray);
+        console.log("cleanedString", cleanedString);
 
         const matchedIngredients = ingredientsArray.filter((item) =>
           groceryList.some((term) =>
