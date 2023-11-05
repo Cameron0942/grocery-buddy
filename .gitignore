@@ -15,7 +15,7 @@ dist-ssr
 .env.production
 
 #images
-/backend/food-images
+#/backend/food-images
 
 # Editor directories and files
 .vscode/*
