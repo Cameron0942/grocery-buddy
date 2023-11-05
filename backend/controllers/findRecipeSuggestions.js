@@ -38,7 +38,7 @@ function getMatchedRecipes(callback, groceryList) {
 
         cleanedString = formatFractionToRatio(cleanedString);
 
-        console.log("cleanedString", cleanedString);
+        // console.log("cleanedString", cleanedString);
         try {
 
           const ingredientsArray = JSON.parse(cleanedString);
