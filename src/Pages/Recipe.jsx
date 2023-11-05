@@ -107,7 +107,7 @@ const Recipe = () => {
   }, [responseMessage]);
 
   useEffect(() => {
-    makePostRequest("http://localhost:5000/recipe");
+    makePostRequest(`${import.meta.env.VITE_PROD_URL}/recipe`);
   }, []);
 
   const handlePageChange = (event, page) => {
