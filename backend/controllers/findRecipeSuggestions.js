@@ -9,56 +9,57 @@ function getMatchedRecipes(callback, groceryList) {
   let matchedRecipes = [];
   let imageFiles = [];
 
-  console.log("FILE", FILE);
-  console.log("IMAGES", IMAGES);
+  const readStream = fs.createReadStream(FILE);
 
-  fs.createReadStream(FILE)
-    .pipe(csv())
-    .on("data", (row) => {
-      const ingredientsString = row.Ingredients;
+  readStream
+  .on("error", (err) => {
+    // Handle the error here
+    console.error("Error reading the file:", err);
+  })
+  .pipe(csv())
+  .on("data", (row) => {
+    const ingredientsString = row.Ingredients;
 
-      try {
-        const cleanedString = ingredientsString
-          .replace(/\r?\n|\r/g, "")
-          .replace(/'/g, '"')
-          .replace(/""/g, '"');
+    try {
+      const cleanedString = ingredientsString
+        .replace(/\r?\n|\r/g, "")
+        .replace(/'/g, '"')
+        .replace(/""/g, '"');
 
-        const ingredientsArray = JSON.parse(cleanedString);
+      const ingredientsArray = JSON.parse(cleanedString);
 
-        const matchedIngredients = ingredientsArray.filter((item) =>
-          groceryList.some((term) =>
-            item.toLowerCase().includes(term.toLowerCase())
-          )
-        );
+      const matchedIngredients = ingredientsArray.filter((item) =>
+        groceryList.some((term) => item.toLowerCase().includes(term.toLowerCase()))
+      );
 
-        if ((matchedIngredients.length / ingredientsArray.length) * 100 >= 40) {
-          const imageFileName = row.Image_Name;
+      if ((matchedIngredients.length / ingredientsArray.length) * 100 >= 40) {
+        const imageFileName = row.Image_Name;
 
-          // Construct the image file path
-          const imagePath = `${IMAGES}/${imageFileName}.jpg`;
+        // Construct the image file path
+        const imagePath = `${IMAGES}/${imageFileName}.jpg`;
 
-          // Read the image file as a binary buffer
-          const imageBuffer = fs.readFileSync(imagePath);
+        // Read the image file as a binary buffer
+        const imageBuffer = fs.readFileSync(imagePath);
 
-          // Add the image path to the imageFiles array
-          imageFiles.push(imageBuffer);
+        // Add the image path to the imageFiles array
+        imageFiles.push(imageBuffer);
 
-          matchedRecipes.push({
-            ...row,
-            image: imageBuffer, // Include the image path in the recipe data
-          });
-        }
-      } catch (error) {
-        errorCount++;
+        matchedRecipes.push({
+          ...row,
+          image: imageBuffer, // Include the image path in the recipe data
+        });
       }
-    })
-    .on("end", () => {
-      console.log("All rows have been processed.");
-      console.log("There were", errorCount, "errors");
+    } catch (error) {
+      errorCount++;
+    }
+  })
+  .on("end", () => {
+    console.log("All rows have been processed.");
+    console.log("There were", errorCount, "errors");
 
-      // Call the callback function with the matched recipes and image files
-      callback(matchedRecipes);
-    });
+    // Call the callback function with the matched recipes and image files
+    callback(matchedRecipes);
+  });
 }
 
 export default getMatchedRecipes;
