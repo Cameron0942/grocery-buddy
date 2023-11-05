@@ -14,8 +14,6 @@ function getMatchedRecipes(callback, groceryList) {
     .on("data", (row) => {
       const ingredientsString = row.Ingredients;
 
-      console.log("ingredientsString", ingredientsString);
-
       try {
         const cleanedString = ingredientsString
           .replace(/\r?\n|\r/g, "")
@@ -23,6 +21,8 @@ function getMatchedRecipes(callback, groceryList) {
           .replace(/""/g, '"');
 
         const ingredientsArray = JSON.parse(cleanedString);
+
+        console.log("ingredientsArray", ingredientsArray);
 
         const matchedIngredients = ingredientsArray.filter((item) =>
           groceryList.some((term) =>
