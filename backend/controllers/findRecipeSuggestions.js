@@ -4,6 +4,20 @@ import csv from "csv-parser";
 const FILE = "./recipe_data_and_images.csv";
 const IMAGES = "./food-images";
 
+function formatFractionToRatio(inputString) {
+  // Define a map of common fractions and their decimal equivalents
+  const formatFraction = {
+    "¼": "1/4",
+    "⅓": "1/3",
+    "½": "1/2",
+    "¾": "3/4",
+    // Add more fractions as needed
+  };
+
+  // Replace fraction characters with decimal equivalents
+  return inputString.replace(/¼|⅓|½|¾/g, (match) => formatFraction[match]);
+}
+
 function getMatchedRecipes(callback, groceryList) {
   let errorCount = 0;
   let matchedRecipes = [];
@@ -15,38 +29,50 @@ function getMatchedRecipes(callback, groceryList) {
       const ingredientsString = row.Ingredients;
 
       try {
-        const cleanedString = ingredientsString
-          .replace(/\r?\n|\r/g, "")
-          .replace(/'/g, '"')
-          .replace(/""/g, '"');
+        let cleanedString = ingredientsString
+          .replace(/\r?\n|\r/g, "") // Remove newlines and carriage returns
+          .replace(/'/g, '"') // Replace single quotes with double quotes
+          .replace(/""/g, '"') // Replace consecutive double quotes with a single double quote
+          .replace(/([^"])'/g, '$1"') // Replace single quotes not preceded by double quotes with double quotes
+          .replace(/'([^"])/g, '"$1'); // Replace single quotes not followed by double quotes with double quotes
 
-        const ingredientsArray = JSON.parse(cleanedString);
+        cleanedString = formatFractionToRatio(cleanedString);
 
-        const matchedIngredients = ingredientsArray.filter((item) =>
-          groceryList.some((term) =>
-            item.toLowerCase().includes(term.toLowerCase())
-          )
-        );
+        // console.log("cleanedString", cleanedString);
+        try {
 
-        if ((matchedIngredients.length / ingredientsArray.length) * 100 >= 40) {
-          const imageFileName = row.Image_Name;
-
-          // Construct the image file path
-          const imagePath = `${IMAGES}/${imageFileName}.jpg`;
-
-          // Read the image file as a binary buffer
-          const imageBuffer = fs.readFileSync(imagePath);
-
-          // Add the image path to the imageFiles array
-          imageFiles.push(imageBuffer);
-
-          matchedRecipes.push({
-            ...row,
-            image: imageBuffer, // Include the image path in the recipe data
-          });
+          const ingredientsArray = JSON.parse(cleanedString);
+          const matchedIngredients = ingredientsArray.filter((item) =>
+            groceryList.some((term) =>
+              item.toLowerCase().includes(term.toLowerCase())
+            )
+          );
+  
+          if ((matchedIngredients.length / ingredientsArray.length) * 100 >= 40) {
+            const imageFileName = row.Image_Name;
+  
+            // Construct the image file path
+            const imagePath = `${IMAGES}/${imageFileName}.jpg`;
+  
+            // Read the image file as a binary buffer
+            const imageBuffer = fs.readFileSync(imagePath);
+  
+            // Add the image path to the imageFiles array
+            imageFiles.push(imageBuffer);
+  
+            matchedRecipes.push({
+              ...row,
+              image: imageBuffer, // Include the image path in the recipe data
+            });
+          }
         }
+        catch(e) {
+          console.log("error parsing to JSON array")
+        }
+
       } catch (error) {
         errorCount++;
+        console.log("Error cleaning string", error);
       }
     })
     .on("end", () => {
