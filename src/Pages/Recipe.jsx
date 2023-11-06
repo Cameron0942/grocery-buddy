@@ -107,7 +107,7 @@ const Recipe = () => {
   }, [responseMessage]);
 
   useEffect(() => {
-    makePostRequest("http://localhost:5000/recipe");
+    makePostRequest('https://grocery-buddy-hz65.onrender.com/recipe');
   }, []);
 
   const handlePageChange = (event, page) => {
@@ -125,6 +125,8 @@ const Recipe = () => {
   async function makePostRequest(url) {
     try {
       setLoading(true);
+
+      console.log("making POST request to this url: ", url);
 
       const response = await axios.post(url, payload, {
         headers: {
