@@ -126,6 +126,8 @@ const Recipe = () => {
     try {
       setLoading(true);
 
+      console.log("making POST request to this url: ", url);
+
       const response = await axios.post(url, payload, {
         headers: {
           "Content-Type": "application/json",
