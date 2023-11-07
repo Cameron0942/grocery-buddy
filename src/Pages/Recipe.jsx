@@ -16,9 +16,7 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Divider from "@mui/material/Divider";
 import Pagination from "@mui/material/Pagination";
-import { Button } from "@material-ui/core";
-
-const payload = JSON.parse(localStorage.getItem("list")) || ["chicken"];
+import { Button, CircularProgress } from "@material-ui/core";
 
 const ExpandMore = styled((props) => {
   // eslint-disable-next-line no-unused-vars
@@ -107,7 +105,7 @@ const Recipe = () => {
   }, [responseMessage]);
 
   useEffect(() => {
-    makePostRequest('https://grocery-buddy-hz65.onrender.com/recipe');
+    makePostRequest("https://grocery-buddy-hz65.onrender.com/recipe");
   }, []);
 
   const handlePageChange = (event, page) => {
@@ -126,7 +124,7 @@ const Recipe = () => {
     try {
       setLoading(true);
 
-      console.log("making POST request to this url: ", url);
+      const payload = JSON.parse(localStorage.getItem("list")) || ["chicken"];
 
       const response = await axios.post(url, payload, {
         headers: {
@@ -167,6 +165,7 @@ const Recipe = () => {
           paddingRight: 4,
           paddingBottom: 2,
         }}
+        className='responsive-card'
       >
         <CardHeader
           title={recipe.Title}
@@ -176,6 +175,7 @@ const Recipe = () => {
               fontSize: "40px",
             },
           }}
+          className='responsive-card-header'
         />
         <Divider
           sx={{
@@ -206,6 +206,7 @@ const Recipe = () => {
               borderRadius: "4px",
               outline: "1px solid black",
             }}
+            className='responsive-card-img'
           />
         </div>
         <Divider sx={{ backgroundColor: "#000000", height: "2px" }} />
@@ -267,6 +268,7 @@ const Recipe = () => {
             color: "#ffffff",
             textShadow: "1px 1px black",
           }}
+          className="responsive-suggested-recipe-header"
         >
           Suggested Recipes
         </h1>
@@ -297,6 +299,13 @@ const Recipe = () => {
         </Button>
       </div>
       <div>
+
+        {loading && (
+          <div style={{display: 'flex', justifyContent: 'center'}}>
+            <CircularProgress size={75} color="secondary" />
+          </div>
+        )}
+
         {responseMessage && (
           <div style={{ paddingBottom: 2 }}>
             <div style={{ display: "flex", justifyContent: "center" }}>
