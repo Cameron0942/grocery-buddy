@@ -14,9 +14,9 @@ const ItemInput = () => {
   const dispatch = useDispatch();
   const reduxGroceryList = useSelector((state) => state.groceryList.items);
 
-  useEffect(() => {
-    console.log("reduxGroceryList", reduxGroceryList);
-  }, [reduxGroceryList]);
+  // useEffect(() => {
+  //   console.log("reduxGroceryList", reduxGroceryList);
+  // }, [reduxGroceryList]);
 
   //* Component functions
   //? HANDLE SUBMIT

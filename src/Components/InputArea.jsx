@@ -14,10 +14,9 @@ const InputArea = () => {
   useEffect(() => {
     try {
         // dispatch(addItemToList({ item: 'test item' }));
-        console.log(JSON.parse(localStorage.getItem("list")))
+        // console.log(JSON.parse(localStorage.getItem("list")))
         let LocalStorageState = JSON.parse(localStorage.getItem("list"));
         LocalStorageState.forEach(element => {
-            console.log(element)
             dispatch(addItemToList({ item: element }));
         });
 
