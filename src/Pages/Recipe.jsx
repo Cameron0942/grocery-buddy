@@ -18,8 +18,6 @@ import Divider from "@mui/material/Divider";
 import Pagination from "@mui/material/Pagination";
 import { Button, CircularProgress } from "@material-ui/core";
 
-console.log("Test")
-
 const ExpandMore = styled((props) => {
   // eslint-disable-next-line no-unused-vars
   const { expand, ...other } = props;
