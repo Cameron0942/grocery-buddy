@@ -40,7 +40,10 @@ function formatInstructions(instructions) {
     <ul>
       {/* Map each line of instructions to a list item (<li>) */}
       {lines.map((line, index) => (
-        <li key={index}>{line}</li>
+        <>
+          <li key={index}>{line}</li>
+          <Divider sx={{ backgroundColor: "#000000", height: "1px" }} />
+        </>
       ))}
     </ul>
   );
@@ -165,7 +168,7 @@ const Recipe = () => {
           paddingRight: 4,
           paddingBottom: 2,
         }}
-        className='responsive-card'
+        className="responsive-card"
       >
         <CardHeader
           title={recipe.Title}
@@ -175,7 +178,7 @@ const Recipe = () => {
               fontSize: "40px",
             },
           }}
-          className='responsive-card-header'
+          className="responsive-card-header"
         />
         <Divider
           sx={{
@@ -206,7 +209,7 @@ const Recipe = () => {
               borderRadius: "4px",
               outline: "1px solid black",
             }}
-            className='responsive-card-img'
+            className="responsive-card-img"
           />
         </div>
         <Divider sx={{ backgroundColor: "#000000", height: "2px" }} />
@@ -214,9 +217,12 @@ const Recipe = () => {
         <CardContent>
           {JSON.parse(recipe.Ingredients.replace(/'/g, '"')).map(
             (ingredient, index) => (
-              <li key={index} style={{ fontSize: "18px" }}>
-                {ingredient}
-              </li>
+              <>
+                <li key={index} style={{ fontSize: "18px" }}>
+                  {ingredient}
+                </li>
+                <Divider sx={{ backgroundColor: "#000000", height: "1px" }} />
+              </>
             )
           )}
         </CardContent>
@@ -273,14 +279,12 @@ const Recipe = () => {
         </h1>
         <Typography
           variant="body1"
-          sx={{
-
-          }}
+          sx={{}}
           className="responsive-suggested-recipe-description"
         >
-          These recipes are suggested to you based on the items in your grocery list.
-          If your grocery list contains at least half of the ingredients for a
-          recipe, it will be suggested to you. To generate more recipes{" "}
+          These recipes are suggested to you based on the items in your grocery
+          list. If your grocery list contains at least half of the ingredients
+          for a recipe, it will be suggested to you. To generate more recipes{" "}
           <a href="/" style={{ textDecoration: "none", color: "#a8c8f7" }}>
             <u>try adding more items to your grocery list!</u>
           </a>
@@ -296,10 +300,18 @@ const Recipe = () => {
         </Button>
       </div>
       <div>
-
         {loading && (
-          <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
-            <span style={{color: '#ffffff', textShadow: '1px 1px black'}}>Loading recipes...</span>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            <span style={{ color: "#ffffff", textShadow: "1px 1px black" }}>
+              Loading recipes...
+            </span>
             <CircularProgress size={75} color="secondary" />
           </div>
         )}
