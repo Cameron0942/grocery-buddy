@@ -124,7 +124,7 @@ const Recipe = () => {
     try {
       setLoading(true);
 
-      const payload = JSON.parse(localStorage.getItem("list")) || ["chicken"];
+      const payload = JSON.parse(localStorage.getItem("list")) || ["no items"];
 
       const response = await axios.post(url, payload, {
         headers: {
