@@ -94,7 +94,7 @@ const SmartList = () => {
         ],
       });
       const chatGPTRes = JSON.parse(res.data.choices[0].message.content);
-      console.log("chatGPTRes", chatGPTRes);
+      // console.log("chatGPTRes", chatGPTRes);
       setLoading(false);
       setSnackbarOpen(false);
 
