@@ -16,9 +16,7 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Divider from "@mui/material/Divider";
 import Pagination from "@mui/material/Pagination";
-import { Button } from "@material-ui/core";
-
-const payload = JSON.parse(localStorage.getItem("list")) || ["chicken"];
+import { Button, CircularProgress } from "@material-ui/core";
 
 const ExpandMore = styled((props) => {
   // eslint-disable-next-line no-unused-vars
@@ -107,7 +105,7 @@ const Recipe = () => {
   }, [responseMessage]);
 
   useEffect(() => {
-    makePostRequest("http://localhost:5000/recipe");
+    makePostRequest("https://grocery-buddy-hz65.onrender.com/recipe");
   }, []);
 
   const handlePageChange = (event, page) => {
@@ -125,6 +123,8 @@ const Recipe = () => {
   async function makePostRequest(url) {
     try {
       setLoading(true);
+
+      const payload = JSON.parse(localStorage.getItem("list")) || ["chicken"];
 
       const response = await axios.post(url, payload, {
         headers: {
@@ -165,6 +165,7 @@ const Recipe = () => {
           paddingRight: 4,
           paddingBottom: 2,
         }}
+        className='responsive-card'
       >
         <CardHeader
           title={recipe.Title}
@@ -174,6 +175,7 @@ const Recipe = () => {
               fontSize: "40px",
             },
           }}
+          className='responsive-card-header'
         />
         <Divider
           sx={{
@@ -204,6 +206,7 @@ const Recipe = () => {
               borderRadius: "4px",
               outline: "1px solid black",
             }}
+            className='responsive-card-img'
           />
         </div>
         <Divider sx={{ backgroundColor: "#000000", height: "2px" }} />
@@ -262,22 +265,20 @@ const Recipe = () => {
       >
         <h1
           style={{
-            color: "#ffffff",
             textShadow: "1px 1px black",
           }}
+          className="responsive-suggested-recipe-header"
         >
           Suggested Recipes
         </h1>
         <Typography
           variant="body1"
           sx={{
-            color: "white",
-            width: "80ch",
-            textShadow: "1px 1px black",
-            textAlign: "center",
+
           }}
+          className="responsive-suggested-recipe-description"
         >
-          These recipes are suggested based on the items in your grocery list.
+          These recipes are suggested to you based on the items in your grocery list.
           If your grocery list contains at least half of the ingredients for a
           recipe, it will be suggested to you. To generate more recipes{" "}
           <a href="/" style={{ textDecoration: "none", color: "#a8c8f7" }}>
@@ -295,6 +296,14 @@ const Recipe = () => {
         </Button>
       </div>
       <div>
+
+        {loading && (
+          <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
+            <span style={{color: '#ffffff', textShadow: '1px 1px black'}}>Loading recipes...</span>
+            <CircularProgress size={75} color="secondary" />
+          </div>
+        )}
+
         {responseMessage && (
           <div style={{ paddingBottom: 2 }}>
             <div style={{ display: "flex", justifyContent: "center" }}>
