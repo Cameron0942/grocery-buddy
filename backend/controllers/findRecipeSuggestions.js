@@ -67,12 +67,12 @@ function getMatchedRecipes(callback, groceryList) {
           }
         }
         catch(e) {
-          console.log("error parsing to JSON array")
+          // console.log("error parsing to JSON array");
         }
 
       } catch (error) {
         errorCount++;
-        console.log("Error cleaning string", error);
+        // console.log("Error cleaning string", error);
       }
     })
     .on("end", () => {
