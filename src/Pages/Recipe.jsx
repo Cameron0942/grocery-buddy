@@ -265,7 +265,6 @@ const Recipe = () => {
       >
         <h1
           style={{
-            color: "#ffffff",
             textShadow: "1px 1px black",
           }}
           className="responsive-suggested-recipe-header"
@@ -275,13 +274,11 @@ const Recipe = () => {
         <Typography
           variant="body1"
           sx={{
-            color: "white",
-            width: "80ch",
-            textShadow: "1px 1px black",
-            textAlign: "center",
+
           }}
+          className="responsive-suggested-recipe-description"
         >
-          These recipes are suggested based on the items in your grocery list.
+          These recipes are suggested to you based on the items in your grocery list.
           If your grocery list contains at least half of the ingredients for a
           recipe, it will be suggested to you. To generate more recipes{" "}
           <a href="/" style={{ textDecoration: "none", color: "#a8c8f7" }}>
@@ -301,7 +298,8 @@ const Recipe = () => {
       <div>
 
         {loading && (
-          <div style={{display: 'flex', justifyContent: 'center'}}>
+          <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
+            <span style={{color: '#ffffff', textShadow: '1px 1px black'}}>Loading recipes...</span>
             <CircularProgress size={75} color="secondary" />
           </div>
         )}

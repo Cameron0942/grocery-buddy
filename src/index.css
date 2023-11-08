@@ -170,8 +170,18 @@ html {
   }
 }
 
-
 /* Recipe component responsive styling */
+.responsive-suggested-recipe-header {
+  color: #ffffff;
+}
+
+.responsive-suggested-recipe-description {
+  color: #ffffff;
+  width: 80ch;
+  text-shadow: 1px 1px black;
+  text-align: center;
+}
+
 @media screen and (max-width: 820px) {
   .responsive-card {
     min-width: 98dvw;
@@ -179,16 +189,15 @@ html {
     padding-right: 1rem !important;
   }
 
-  .responsive-card-header .MuiTypography-root{
+  .responsive-card-header .MuiTypography-root {
     font-size: 1.5rem !important;
   }
 
-  /* not working..... */
   .responsive-suggested-recipe-header {
-    color: red;
+    font-size: 1.5rem;
   }
 
-  .responsive-card-img{
-    
+  .responsive-suggested-recipe-description {
+    width: 90dvw;
   }
 }
